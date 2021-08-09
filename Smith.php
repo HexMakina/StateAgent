@@ -1,6 +1,6 @@
 <?php
 
-namespace HexMakina\StateAgent;
+namespace HexMakina\Smith;
 
 class Smith
 {
