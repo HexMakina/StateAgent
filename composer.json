@@ -1,6 +1,6 @@
 {
-    "name": "hexmakina/state-agent",
-    "description": "Smith is a wrapper for PHP Session operations",
+    "name": "hexmakina/smith",
+    "description": "Smith is a state agent, he manages PHP sessions",
     "type": "package",
     "require": {
         "php": ">=7.4"
