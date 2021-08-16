@@ -4,8 +4,11 @@ namespace HexMakina\Smith;
 
 class Smith
 {
+  const REPORTING_USER = 'user_messages';
+
   private $index_filter = 'filter';
   private $index_operator = 'operator';
+  private $index_messages = 'user_messages';
 
   // IS-54-16 : Behold, I have created the smith who blows the fire of coals
   // $options : https://www.php.net/manual/fr/session.configuration.php
@@ -20,11 +23,36 @@ class Smith
     session_start($options); // https://www.php.net/manual/fr/function.session-start.php
   }
 
+
   // IS-54-16 : and produces a weapon for its purpose
+  public function add_message($level, $message, $context=[])
+  {
+    if(!isset($_SESSION[self::REPORTING_USER]))
+      $_SESSION[self::REPORTING_USER] = [];
+
+    if(!isset($_SESSION[self::REPORTING_USER][$level]))
+      $_SESSION[self::REPORTING_USER][$level] = [];
+
+    $_SESSION[self::REPORTING_USER][$level][] = [$message, $context];
+  }
+
+  public function messages($level=null)
+  {
+    if(is_null($level))
+      return $_SESSION[self::REPORTING_USER];
+
+    return $_SESSION[self::REPORTING_USER][$level] ?? null;
+  }
+
+  public function reset_messages($level=null)
+  {
+    $this->reset(self::REPORTING_USER, $level);
+  }
+
 
   public function add_runtime_filters($filters)
   {
-    $_SESSION[$this->index_filter] = array_merge($_SESSION[$this->index_filter] ?? [], $filters);
+    $_SESSION[self::$this->index_filter] = array_merge($_SESSION[$this->index_filter] ?? [], $filters);
   }
 
   public function has_filter($filter_name) : bool
@@ -45,10 +73,7 @@ class Smith
 
   public function reset_filters($filter_name=null)
   {
-    if(is_null($filter_name))
-      $_SESSION[$this->index_filter]=[];
-    else
-      unset($_SESSION[$this->index_filter][$filter_name]);
+    $this->reset($this->index_filter, $filter_name);
   }
 
   public function operator_id($setter = null)
@@ -77,5 +102,13 @@ class Smith
       );
     }
     return session_destroy();
+  }
+
+  private function reset($index, $part=null)
+  {
+    if(is_null($part))
+      $_SESSION[$index]=[];
+    else
+      unset($_SESSION[$index][$part]);
   }
 }
