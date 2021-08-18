@@ -5,10 +5,8 @@ namespace HexMakina\Smith;
 class Smith
 {
   const REPORTING_USER = 'user_messages';
-
-  private $index_filter = 'filter';
-  private $index_operator = 'operator';
-  private $index_messages = 'user_messages';
+  const INDEX_FILTER = 'filter';
+  const INDEX_OPERATOR = 'operator';
 
   // IS-54-16 : Behold, I have created the smith who blows the fire of coals
   // $options : https://www.php.net/manual/fr/session.configuration.php
@@ -52,41 +50,41 @@ class Smith
 
   public function add_runtime_filters($filters)
   {
-    $_SESSION[self::$this->index_filter] = array_merge($_SESSION[$this->index_filter] ?? [], $filters);
+    $_SESSION[self::INDEX_FILTER] = array_merge($_SESSION[self::INDEX_FILTER] ?? [], $filters);
   }
 
   public function has_filter($filter_name) : bool
   {
-    return isset($_SESSION[$this->index_filter][$filter_name]) && strlen(''.$_SESSION[$this->index_filter][$filter_name]) > 0;
+    return isset($_SESSION[self::INDEX_FILTER][$filter_name]) && strlen(''.$_SESSION[self::INDEX_FILTER][$filter_name]) > 0;
   }
 
   public function filters($filter_name=null, $value=null)
   {
     if(is_null($filter_name))
-      return $_SESSION[$this->index_filter];
+      return $_SESSION[self::INDEX_FILTER];
 
     if(!is_null($value))
-      $_SESSION[$this->index_filter][$filter_name] = $value;
+      $_SESSION[self::INDEX_FILTER][$filter_name] = $value;
 
-    return $_SESSION[$this->index_filter][$filter_name] ?? null;
+    return $_SESSION[self::INDEX_FILTER][$filter_name] ?? null;
   }
 
   public function reset_filters($filter_name=null)
   {
-    $this->reset($this->index_filter, $filter_name);
+    $this->reset(self::INDEX_FILTER, $filter_name);
   }
 
   public function operator_id($setter = null)
   {
     if(!is_null($setter))
-      $_SESSION[$this->index_operator] = ['id' => $setter, 'set_on' => time()];
+      $_SESSION[self::INDEX_OPERATOR] = ['id' => $setter, 'set_on' => time()];
 
-    return $_SESSION[$this->index_operator]['id'] ?? null;
+    return $_SESSION[self::INDEX_OPERATOR]['id'] ?? null;
   }
 
   public function operator_started_on()
   {
-    return $_SESSION[$this->index_operator]['set_on'] ?? null;
+    return $_SESSION[self::INDEX_OPERATOR]['set_on'] ?? null;
   }
 
   // IS-54-16 : I have also created the ravager to destroy
