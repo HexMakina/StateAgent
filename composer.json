@@ -3,7 +3,7 @@
     "description": "Smith is a state agent, he manages PHP sessions",
     "type": "package",
     "require": {
-        "php": ">=7.3"
+        "php": ">=7.0"
     },
     "license": "mit",
     "authors": [
