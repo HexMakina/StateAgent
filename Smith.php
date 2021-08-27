@@ -10,7 +10,7 @@ class Smith
 
   // IS-54-16 : Behold, I have created the smith who blows the fire of coals
   // $options : https://www.php.net/manual/fr/session.configuration.php
-    public function __construct($options)
+    public function __construct($options = [])
     {
         if (isset($options['session_name'])) {
             session_name($options['session_name']);
@@ -20,9 +20,20 @@ class Smith
         session_start($options); // https://www.php.net/manual/fr/function.session-start.php
     }
 
+    // camelCase wrapper for setcookie, coherent with getCookie
+    public function setCookie($name, $value = "", $expires_in = 365 * 24 * 60 * 60, $path = "/", $domain = "", $secure = false, $httponly = false): bool
+    {
+        return setcookie($name, $value, time() + $expires_in, $path, $domain, $secure, $httponly);
+    }
+
+    // returns the value stored or null
+    public function getCookie($name)
+    {
+        return $_COOKIE[$name] ?? null;
+    }
 
   // IS-54-16 : and produces a weapon for its purpose
-    public function add_message($level, $message, $context = [])
+    public function addMessage($level, $message, $context = [])
     {
         if (!isset($_SESSION[self::REPORTING_USER])) {
             $_SESSION[self::REPORTING_USER] = [];
@@ -44,18 +55,18 @@ class Smith
         return $_SESSION[self::REPORTING_USER][$level] ?? null;
     }
 
-    public function reset_messages($level = null)
+    public function resetMessages($level = null)
     {
         $this->reset(self::REPORTING_USER, $level);
     }
 
 
-    public function add_runtime_filters($filters)
+    public function addRuntimeFilters($filters)
     {
         $_SESSION[self::INDEX_FILTER] = array_merge($_SESSION[self::INDEX_FILTER] ?? [], $filters);
     }
 
-    public function has_filter($filter_name): bool
+    public function hasFilter($filter_name): bool
     {
         return isset($_SESSION[self::INDEX_FILTER][$filter_name]) && strlen('' . $_SESSION[self::INDEX_FILTER][$filter_name]) > 0;
     }
@@ -73,7 +84,7 @@ class Smith
         return $_SESSION[self::INDEX_FILTER][$filter_name] ?? null;
     }
 
-    public function reset_filters($filter_name = null)
+    public function resetFilters($filter_name = null)
     {
         $this->reset(self::INDEX_FILTER, $filter_name);
     }
@@ -92,7 +103,7 @@ class Smith
         return $_SESSION[self::INDEX_OPERATOR]['set_on'] ?? null;
     }
 
-  // IS-54-16 : I have also created the ravager to destroy
+    // IS-54-16 : I have also created the ravager to destroy
     public function destroy(): bool
     {
 
