@@ -4,9 +4,9 @@ namespace HexMakina\Smith;
 
 class Smith
 {
-    const REPORTING_USER = 'user_messages';
-    const INDEX_FILTER = 'filter';
-    const INDEX_OPERATOR = 'operator';
+    private const REPORTING_USER = 'user_messages';
+    private const INDEX_FILTER = 'filter';
+    private const INDEX_OPERATOR = 'operator';
 
   // IS-54-16 : Behold, I have created the smith who blows the fire of coals
   // $options : https://www.php.net/manual/fr/session.configuration.php
@@ -89,7 +89,7 @@ class Smith
         $this->reset(self::INDEX_FILTER, $filter_name);
     }
 
-    public function operator_id($setter = null)
+    public function operatorId($setter = null)
     {
         if (!is_null($setter)) {
             $_SESSION[self::INDEX_OPERATOR] = ['id' => $setter, 'set_on' => time()];
@@ -98,7 +98,7 @@ class Smith
         return $_SESSION[self::INDEX_OPERATOR]['id'] ?? null;
     }
 
-    public function operator_started_on()
+    public function operatorCheckinDate()
     {
         return $_SESSION[self::INDEX_OPERATOR]['set_on'] ?? null;
     }
