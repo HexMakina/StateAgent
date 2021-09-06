@@ -2,11 +2,11 @@
 
 namespace HexMakina\Smith;
 
-class Smith
+class Smith implements \HexMakina\Interfaces\StateAgentInterface
 {
-    private const REPORTING_USER = 'user_messages';
-    private const INDEX_FILTER = 'filter';
-    private const INDEX_OPERATOR = 'operator';
+    // private const REPORTING_USER = 'user_messages';
+    // private const INDEX_FILTER = 'filter';
+    // private const INDEX_OPERATOR = 'operator';
 
   // IS-54-16 : Behold, I have created the smith who blows the fire of coals
   // $options : https://www.php.net/manual/fr/session.configuration.php
@@ -71,6 +71,11 @@ class Smith
         return isset($_SESSION[self::INDEX_FILTER][$filter_name]) && strlen('' . $_SESSION[self::INDEX_FILTER][$filter_name]) > 0;
     }
 
+    public function addFilter($filter_name, $value)
+    {
+      $_SESSION[self::INDEX_FILTER][$filter_name] = $value;
+    }
+
     public function filters($filter_name = null, $value = null)
     {
         if (is_null($filter_name)) {
@@ -78,7 +83,7 @@ class Smith
         }
 
         if (!is_null($value)) {
-            $_SESSION[self::INDEX_FILTER][$filter_name] = $value;
+            $this->addFilter($filter_name, $value);
         }
 
         return $_SESSION[self::INDEX_FILTER][$filter_name] ?? null;
