@@ -3,7 +3,8 @@
     "description": "Smith is a state agent, he manages PHP sessions",
     "type": "package",
     "require": {
-        "php": ">=7.0"
+        "php": ">=7.0",
+        "hexmakina/interfaces": "0.0.*"
     },
     "license": "mit",
     "authors": [
