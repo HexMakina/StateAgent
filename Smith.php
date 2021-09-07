@@ -2,21 +2,42 @@
 
 namespace HexMakina\StateAgent;
 
-class Smith implements \HexMakina\Interfaces\StateAgentInterface
+use \HexMakina\Interfaces\StateAgentInterface;
+
+class Smith implements StateAgentInterface
 {
     // private const REPORTING_USER = 'user_messages';
     // private const INDEX_FILTER = 'filter';
     // private const INDEX_OPERATOR = 'operator';
 
-  // IS-54-16 : Behold, I have created the smith who blows the fire of coals
-  // $options : https://www.php.net/manual/fr/session.configuration.php
-    public function __construct($options = [])
+    // IS-54-16 : Behold, I have created the smith who blows the fire of coals
+    // $options : https://www.php.net/manual/fr/session.configuration.php
+
+    private static $instance = null;
+
+    public static function getInstance($options=[]): StateAgentInterface
     {
+
+      if(is_null(self::$instance))
+      {
+        if(session_status() === PHP_SESSION_ACTIVE)
+            throw new \Exception('SESSION_STARTED_WITHOUT_AGENT');
+
+        self::$instance = new Smith($options);
+      }
+
+      return self::$instance;
+    }
+
+    private function __construct($options = [])
+    {
+        $session_name = StateAgentInterface::DEFAULT_SESSION_NAME;
         if (isset($options['session_name'])) {
-            session_name($options['session_name']);
+            $session_name = $options['session_name'];
             unset($options['session_name']);
         }
 
+        session_name($session_name);
         session_start($options); // https://www.php.net/manual/fr/function.session-start.php
     }
 
