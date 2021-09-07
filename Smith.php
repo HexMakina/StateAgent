@@ -2,7 +2,7 @@
 
 namespace HexMakina\StateAgent;
 
-use \HexMakina\Interfaces\StateAgentInterface;
+use HexMakina\Interfaces\StateAgentInterface;
 
 class Smith implements StateAgentInterface
 {
@@ -15,18 +15,18 @@ class Smith implements StateAgentInterface
 
     private static $instance = null;
 
-    public static function getInstance($options=[]): StateAgentInterface
+    public static function getInstance($options = []): StateAgentInterface
     {
 
-      if(is_null(self::$instance))
-      {
-        if(session_status() === PHP_SESSION_ACTIVE)
-            throw new \Exception('SESSION_STARTED_WITHOUT_AGENT');
+        if (is_null(self::$instance)) {
+            if (session_status() === PHP_SESSION_ACTIVE) {
+                throw new \Exception('SESSION_STARTED_WITHOUT_AGENT');
+            }
 
-        self::$instance = new Smith($options);
-      }
+            self::$instance = new Smith($options);
+        }
 
-      return self::$instance;
+        return self::$instance;
     }
 
     private function __construct($options = [])
@@ -94,7 +94,7 @@ class Smith implements StateAgentInterface
 
     public function addFilter($filter_name, $value)
     {
-      $_SESSION[self::INDEX_FILTER][$filter_name] = $value;
+        $_SESSION[self::INDEX_FILTER][$filter_name] = $value;
     }
 
     public function filters($filter_name = null, $value = null)
