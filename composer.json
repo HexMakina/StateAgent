@@ -1,6 +1,6 @@
 {
-    "name": "hexmakina/smith",
-    "description": "Smith is a state agent, he manages PHP sessions",
+    "name": "hexmakina/state-agent",
+    "description": "StateAgent Smith manages PHP Session: user messages, current operator, cookies & search filters",
     "type": "package",
     "require": {
         "php": ">=7.0",
@@ -17,7 +17,7 @@
     "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
-            "HexMakina\\Smith\\": "/"
+            "HexMakina\\StateAgent\\": "/"
         }
     }
 }
