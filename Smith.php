@@ -25,7 +25,7 @@ class Smith implements StateAgentInterface
         switch(session_status())
         {
           case PHP_SESSION_DISABLED:
-            throw new \UnexpectedValueException(__CLASS__'::PHP_SESSION_DISABLED');
+            throw new \UnexpectedValueException(__CLASS__.'::PHP_SESSION_DISABLED');
 
           case PHP_SESSION_NONE:
             session_name($options['session_name'] ?? StateAgentInterface::DEFAULT_SESSION_NAME);
