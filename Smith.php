@@ -2,7 +2,7 @@
 
 namespace HexMakina\StateAgent;
 
-use HexMakina\Interfaces\StateAgentInterface;
+use HexMakina\BlackBox\StateAgentInterface;
 
 class Smith implements StateAgentInterface
 {
