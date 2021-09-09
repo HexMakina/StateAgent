@@ -22,16 +22,15 @@ class Smith implements StateAgentInterface
 
     private function __construct($options = [])
     {
-        switch(session_status())
-        {
-          case PHP_SESSION_DISABLED:
-            throw new \UnexpectedValueException(__CLASS__.'::PHP_SESSION_DISABLED');
+        switch (session_status()) {
+            case PHP_SESSION_DISABLED:
+                throw new \UnexpectedValueException(__CLASS__ . '::PHP_SESSION_DISABLED');
 
-          case PHP_SESSION_NONE:
-            session_name($options['session_name'] ?? StateAgentInterface::DEFAULT_SESSION_NAME);
-            unset($options['session_name']);
-            session_start($options); // https://www.php.net/manual/fr/function.session-start.php
-          break;
+            case PHP_SESSION_NONE:
+                session_name($options['session_name'] ?? StateAgentInterface::DEFAULT_SESSION_NAME);
+                unset($options['session_name']);
+                session_start($options); // https://www.php.net/manual/fr/function.session-start.php
+                break;
         }
 
         if (!isset($_SESSION[self::INDEX_MESSAGES])) {
