@@ -20,17 +20,23 @@ class Smith implements StateAgentInterface
         return self::$instance;
     }
 
+    private static function sessionsAreDisabled(){
+      return session_status() === PHP_SESSION_DISABLED;
+    }
+
+    private static function hasNoSession(){
+      return session_status() === PHP_SESSION_NONE;
+    }
+
     private function __construct($options = [])
     {
-        switch (session_status()) {
-            case PHP_SESSION_DISABLED:
-                throw new \UnexpectedValueException(__CLASS__ . '::PHP_SESSION_DISABLED');
+        if(self::sessionsAreDisabled())
+          throw new \UnexpectedValueException(__CLASS__ . '::PHP_SESSION_DISABLED');
 
-            case PHP_SESSION_NONE:
-                session_name($options['session_name'] ?? StateAgentInterface::DEFAULT_SESSION_NAME);
-                unset($options['session_name']);
-                session_start($options); // https://www.php.net/manual/fr/function.session-start.php
-                break;
+        if(self::hasNoSession()){
+          session_name($options['session_name'] ?? StateAgentInterface::DEFAULT_SESSION_NAME);
+          unset($options['session_name']);
+          session_start($options); // https://www.php.net/manual/fr/function.session-start.php
         }
 
         if (!isset($_SESSION[self::INDEX_MESSAGES])) {
@@ -45,8 +51,6 @@ class Smith implements StateAgentInterface
             $_SESSION[self::INDEX_OPERATOR] = [];
         }
     }
-
-
 
     // camelCase wrapper for setcookie, coherent with getCookie
     public function setCookie($name, $value = "", $expires_in = 365 * 24 * 60 * 60, $path = "/", $domain = "", $secure = false, $httponly = false): bool
