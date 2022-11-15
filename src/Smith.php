@@ -20,23 +20,26 @@ class Smith implements StateAgentInterface
         return self::$instance;
     }
 
-    private static function sessionsAreDisabled(): bool{
-      return session_status() === PHP_SESSION_DISABLED;
+    private static function sessionsAreDisabled(): bool
+    {
+        return session_status() === PHP_SESSION_DISABLED;
     }
 
-    private static function hasNoSession(): bool{
-      return session_status() === PHP_SESSION_NONE;
+    private static function hasNoSession(): bool
+    {
+        return session_status() === PHP_SESSION_NONE;
     }
 
     private function __construct($options = [])
     {
-        if(self::sessionsAreDisabled())
-          throw new \UnexpectedValueException(__CLASS__ . '::PHP_SESSION_DISABLED');
+        if (self::sessionsAreDisabled()) {
+            throw new \UnexpectedValueException(__CLASS__ . '::PHP_SESSION_DISABLED');
+        }
 
-        if(self::hasNoSession()){
-          session_name($options['session_name'] ?? StateAgentInterface::DEFAULT_SESSION_NAME);
-          unset($options['session_name']);
-          session_start($options); // https://www.php.net/manual/fr/function.session-start.php
+        if (self::hasNoSession()) {
+            session_name($options['session_name'] ?? StateAgentInterface::DEFAULT_SESSION_NAME);
+            unset($options['session_name']);
+            session_start($options); // https://www.php.net/manual/fr/function.session-start.php
         }
 
         if (!isset($_SESSION[self::INDEX_MESSAGES])) {
@@ -53,8 +56,15 @@ class Smith implements StateAgentInterface
     }
 
     // camelCase wrapper for setcookie, coherent with getCookie
-    public function setCookie($name, $value = "", $expires_in = 365 * 24 * 60 * 60, $path = "/", $domain = "", $secure = false, $httponly = false): bool
-    {
+    public function setCookie(
+        $name,
+        $value = "",
+        $expires_in = 365 * 24 * 60 * 60,
+        $path = "/",
+        $domain = "",
+        $secure = false,
+        $httponly = false
+    ): bool {
         return setcookie($name, $value, time() + $expires_in, $path, $domain, $secure, $httponly);
     }
 
@@ -101,7 +111,8 @@ class Smith implements StateAgentInterface
 
     public function hasFilter($filter_name): bool
     {
-        return isset($_SESSION[self::INDEX_FILTER][$filter_name]) && strlen('' . $_SESSION[self::INDEX_FILTER][$filter_name]) > 0;
+        return isset($_SESSION[self::INDEX_FILTER][$filter_name])
+        && strlen('' . $_SESSION[self::INDEX_FILTER][$filter_name]) > 0;
     }
 
     public function addFilter($filter_name, $value): void
