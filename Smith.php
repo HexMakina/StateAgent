@@ -7,11 +7,11 @@ use HexMakina\BlackBox\StateAgentInterface;
 class Smith implements StateAgentInterface
 {
 
-    private static $instance = null;
+    private static ?StateAgentInterface $instance = null;
 
     // IS-54-16 : Behold, I have created the smith who blows the fire of coals
     // $options : https://www.php.net/manual/fr/session.configuration.php
-    public static function getInstance($options = []): StateAgentInterface
+    public static function getInstance($options = []): Smith
     {
         if (is_null(self::$instance)) {
             self::$instance = new Smith($options);
@@ -20,11 +20,11 @@ class Smith implements StateAgentInterface
         return self::$instance;
     }
 
-    private static function sessionsAreDisabled(){
+    private static function sessionsAreDisabled(): bool{
       return session_status() === PHP_SESSION_DISABLED;
     }
 
-    private static function hasNoSession(){
+    private static function hasNoSession(): bool{
       return session_status() === PHP_SESSION_NONE;
     }
 
@@ -68,7 +68,7 @@ class Smith implements StateAgentInterface
 
 
     // IS-54-16 : and produces a weapon for its purpose
-    public function addMessage($level, $message, $context = [])
+    public function addMessage($level, $message, $context = []): void
     {
         if (!isset($_SESSION[self::INDEX_MESSAGES][$level])) {
             $_SESSION[self::INDEX_MESSAGES][$level] = [];
@@ -86,7 +86,7 @@ class Smith implements StateAgentInterface
         return $_SESSION[self::INDEX_MESSAGES][$level] ?? null;
     }
 
-    public function resetMessages($level = null)
+    public function resetMessages($level = null): void
     {
         $this->reset(self::INDEX_MESSAGES, $level);
     }
@@ -94,7 +94,7 @@ class Smith implements StateAgentInterface
 
 
 
-    public function addRuntimeFilters($filters)
+    public function addRuntimeFilters($filters): void
     {
         $_SESSION[self::INDEX_FILTER] = array_merge($_SESSION[self::INDEX_FILTER], $filters);
     }
@@ -104,7 +104,7 @@ class Smith implements StateAgentInterface
         return isset($_SESSION[self::INDEX_FILTER][$filter_name]) && strlen('' . $_SESSION[self::INDEX_FILTER][$filter_name]) > 0;
     }
 
-    public function addFilter($filter_name, $value)
+    public function addFilter($filter_name, $value): void
     {
         $_SESSION[self::INDEX_FILTER][$filter_name] = $value;
     }
@@ -122,7 +122,7 @@ class Smith implements StateAgentInterface
         return $_SESSION[self::INDEX_FILTER][$filter_name] ?? null;
     }
 
-    public function resetFilters($filter_name = null)
+    public function resetFilters($filter_name = null): void
     {
         $this->reset(self::INDEX_FILTER, $filter_name);
     }
@@ -158,10 +158,11 @@ class Smith implements StateAgentInterface
                 $params["httponly"]
             );
         }
+
         return session_destroy();
     }
 
-    private function reset($index, $part = null)
+    private function reset($index, $part = null): void
     {
         if (is_null($part)) {
             $_SESSION[$index] = [];
