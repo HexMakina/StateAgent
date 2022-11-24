@@ -102,7 +102,7 @@ class Smith implements StateAgentInterface
         $_SESSION[self::INDEX_FILTER][$filter_name] = $value;
     }
 
-    public function filters(string $filter_name = null, string $value = null): string
+    public function filters(string $filter_name = null, string $value = null): ?string
     {
         if (is_null($filter_name)) {
             return $_SESSION[self::INDEX_FILTER];
