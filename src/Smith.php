@@ -123,7 +123,7 @@ class Smith implements StateAgentInterface
 
     public function operatorId(mixed $setter = null): mixed
     {
-        if (!is_null($setter)) {
+        if ($setter !== null) {
             $_SESSION[self::INDEX_OPERATOR] = ['id' => $setter, 'set_on' => time()];
         }
 
