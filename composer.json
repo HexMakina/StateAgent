@@ -3,7 +3,7 @@
     "description": "StateAgent Smith manages PHP Session: user messages, current operator, cookies & search filters",
     "type": "package",
     "require": {
-        "php": ">=7.0",
+        "php": ">=7.4",
         "hexmakina/black-box": "0.0.*"
     },
     "license": "mit",

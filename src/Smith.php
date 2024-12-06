@@ -51,7 +51,7 @@ class Smith implements StateAgentInterface
     }
 
     // returns the value stored or null
-    public function getCookie(string $name): mixed
+    public function getCookie(string $name): ?string
     {
         return $_COOKIE[$name] ?? null;
     }
@@ -60,7 +60,7 @@ class Smith implements StateAgentInterface
 
 
     // IS-54-16 : and produces a weapon for its purpose
-    public function addMessage(mixed $level, string $message, array $context = []): void
+    public function addMessage(string $level, string $message, array $context = []): void
     {
         if (!isset($_SESSION[self::INDEX_MESSAGES][$level])) {
             $_SESSION[self::INDEX_MESSAGES][$level] = [];
@@ -69,7 +69,7 @@ class Smith implements StateAgentInterface
         $_SESSION[self::INDEX_MESSAGES][$level][] = [$message, $context];
     }
 
-    public function messages(mixed $level = null)
+    public function messages(string $level = null)
     {
         if (is_null($level)) {
             return $_SESSION[self::INDEX_MESSAGES];
@@ -78,7 +78,7 @@ class Smith implements StateAgentInterface
         return $_SESSION[self::INDEX_MESSAGES][$level] ?? null;
     }
 
-    public function resetMessages(mixed $level = null): void
+    public function resetMessages(string $level = null): void
     {
         $this->reset(self::INDEX_MESSAGES, $level);
     }
@@ -97,12 +97,12 @@ class Smith implements StateAgentInterface
         && strlen('' . $_SESSION[self::INDEX_FILTER][$filter_name]) > 0;
     }
 
-    public function addFilter(string $filter_name, mixed $value): void
+    public function addFilter(string $filter_name, string $value): void
     {
         $_SESSION[self::INDEX_FILTER][$filter_name] = $value;
     }
 
-    public function filters(string $filter_name = null, mixed $value = null): mixed
+    public function filters(string $filter_name = null, string $value = null): ?string
     {
         if (is_null($filter_name)) {
             return $_SESSION[self::INDEX_FILTER];
@@ -120,8 +120,7 @@ class Smith implements StateAgentInterface
         $this->reset(self::INDEX_FILTER, $filter_name);
     }
 
-
-    public function operatorId(mixed $setter = null): mixed
+    public function operatorId(string $setter = null): ?string
     {
         if ($setter !== null) {
             $_SESSION[self::INDEX_OPERATOR] = ['id' => $setter, 'set_on' => time()];
@@ -130,7 +129,7 @@ class Smith implements StateAgentInterface
         return $_SESSION[self::INDEX_OPERATOR]['id'] ?? null;
     }
 
-    public function operatorCheckinDate(): mixed
+    public function operatorCheckinDate(): string
     {
         return $_SESSION[self::INDEX_OPERATOR]['set_on'] ?? null;
     }
@@ -155,7 +154,7 @@ class Smith implements StateAgentInterface
         return session_destroy();
     }
 
-    private function reset(mixed $index, mixed $part = null): void
+    private function reset(string $index, string $part = null): void
     {
         if (is_null($part)) {
             $_SESSION[$index] = [];
